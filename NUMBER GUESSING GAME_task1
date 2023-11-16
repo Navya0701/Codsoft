@@ -1,0 +1,22 @@
+#include <iostream>
+#include <cstdlib>
+#include <ctime>
+
+int main() {
+    srand(time(0));
+    int secret = rand() % 100 + 1, guess, attempts = 0;
+
+    std::cout << "Welcome to the Number Guessing Game!\n";
+
+    do {
+        std::cout << "Enter your guess: ";
+        std::cin >> guess;
+        attempts++;
+
+        std::cout << (guess == secret ? "Congratulations! You guessed it in " + std::to_string(attempts) + " attempts.\n" :
+                                        (guess < secret ? "Too low! Try again.\n" : "Too high! Try again.\n"));
+
+    } while (guess != secret);
+
+    return 0;
+}
