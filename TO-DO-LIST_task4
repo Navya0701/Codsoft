@@ -1,0 +1,100 @@
+#include <iostream>
+#include <vector>
+#include <string>
+
+struct Task {
+    std::string description;
+    std::string status;
+};
+
+class TaskManager {
+private:
+    std::vector<Task> tasks;
+
+public:
+    void addTask(const std::string& taskDescription) {
+        tasks.push_back({taskDescription, "pending"});
+    }
+
+    void viewTasks() const {
+        if (tasks.empty()) {
+            std::cout << "No tasks found.\n";
+        } else {
+            for (size_t i = 0; i < tasks.size(); ++i) {
+                std::cout << i + 1 << ". Task: " << tasks[i].description << " | Status: " << tasks[i].status << "\n";
+            }
+        }
+    }
+
+    void markAsCompleted(size_t taskIndex) {
+        if (taskIndex >= 1 && taskIndex <= tasks.size()) {
+            tasks[taskIndex - 1].status = "completed";
+            std::cout << "Task " << taskIndex << " marked as completed.\n";
+        } else {
+            std::cout << "Invalid task index.\n";
+        }
+    }
+
+    void removeTask(size_t taskIndex) {
+        if (taskIndex >= 1 && taskIndex <= tasks.size()) {
+            std::cout << "Removed task: " << tasks[taskIndex - 1].description << "\n";
+            tasks.erase(tasks.begin() + taskIndex - 1);
+        } else {
+            std::cout << "Invalid task index.\n";
+        }
+    }
+};
+
+int main() {
+    TaskManager taskManager;
+
+    while (true) {
+        std::cout << "\nTask Manager Menu\n";
+        std::cout << "1. Add Task to the system\n";
+        std::cout << "2. View Tasks in the system\n";
+        std::cout << "3. Mark Task as Completed in the system\n";
+        std::cout << "4. Remove Task from the system\n";
+        std::cout << "5. Exit\n";
+
+        int choice;
+        std::cout << "Enter your choice (1-5): ";
+        std::cin >> choice;
+
+        switch (choice) {
+            case 1: {
+                std::string newTask;
+                std::cout << "Enter the task: ";
+                std::cin.ignore(); // Clear the input buffer
+                std::getline(std::cin, newTask);
+                taskManager.addTask(newTask);
+                break;
+            }
+            case 2:
+                taskManager.viewTasks();
+                break;
+            case 3: {
+                taskManager.viewTasks();
+                size_t taskIndex;
+                std::cout << "Enter the index of the task to mark as completed: ";
+                std::cin >> taskIndex;
+                taskManager.markAsCompleted(taskIndex);
+                break;
+            }
+            case 4: {
+                taskManager.viewTasks();
+                size_t taskIndex;
+                std::cout << "Enter the index of the task to remove: ";
+                std::cin >> taskIndex;
+                taskManager.removeTask(taskIndex);
+                break;
+            }
+            case 5:
+                std::cout << "Exiting the Task Manager. Goodbye!\n";
+                return 0;
+            default:
+                std::cout << "Invalid choice. Please enter a number between 1 and 5.\n";
+        }
+    }
+
+    return 0;
+}
